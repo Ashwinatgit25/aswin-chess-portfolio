@@ -10,6 +10,7 @@ import SkillsSection from "./components/SkillsSection";
 import ProjectsSection from "./components/ProjectsSection";
 import AchievementsSection from "./components/AchievementsSection";
 import ContactSection from "./components/ContactSection";
+import JarvisAI from "./components/JarvisAI";
 
 export default function Home() {
 
@@ -387,6 +388,8 @@ text-center
             <AchievementsSection />
 
             <ContactSection />
+
+            <JarvisAI />
 
           </motion.div>
 

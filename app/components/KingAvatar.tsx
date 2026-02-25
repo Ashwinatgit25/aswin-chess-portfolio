@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSectionObserver } from "../hooks/useSectionObserver";
 import DialogueBubble from "./ui/DialogueBubble";
-import KingChatbot from "./KingChatbot";
 
 
 // Sections
@@ -230,18 +229,6 @@ drop-shadow-[0_0_25px_#D4AF37]
                 </div>
 
             </motion.div>
-
-
-
-            {/* 👑 CHATBOT */}
-
-            <KingChatbot
-
-                open={chatOpen}
-
-                onClose={() => setChatOpen(false)}
-
-            />
 
         </>
 
