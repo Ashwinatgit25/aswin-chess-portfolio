@@ -120,10 +120,64 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-body{
-  background: #E6C77A;
+
+body {
+  background: #F3E4B5;
+}
+
+/* ================= BODY TEXT GLOBAL STYLE ================= */
+
+p {
+
+  font-size: 1.08rem;
+  /* bigger size */
+
+  font-weight: 500;
+  /* semi bold */
+
+  line-height: 1.75;
+
+  letter-spacing: 0.3px;
+
+  color: #E5E7EB;
+  /* premium silver white */
+
+}
+
+
+/* lists also */
+
+li {
+
+  font-size: 1.05rem;
+
+  font-weight: 500;
+
+  color: #E5E7EB;
+
+}
+
+
+/* span descriptions */
+
+span {
+
+  font-weight: 500;
+
+}
+
+
+/* card descriptions better readability */
+
+.text-royal-silver {
+
+  color: #D1D5DB !important;
+
+  font-weight: 500;
+
 }

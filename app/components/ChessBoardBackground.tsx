@@ -1,9 +1,12 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+import * as THREE from "three";
+
+
+// ================= ROTATING BOARD =================
 
 function RotatingBoard({ children }: any) {
 
@@ -13,29 +16,26 @@ function RotatingBoard({ children }: any) {
 
         if (ref.current) {
 
-            ref.current.rotation.y += 0.0015;
+            ref.current.rotation.y += 0.0012;
 
         }
 
     });
 
-    return (
-
-        <group ref={ref}>
-
-            {children}
-
-        </group>
-
-    );
+    return <group ref={ref}>{children}</group>;
 
 }
+
+
+
+// ================= CHESS BOARD =================
 
 function ChessBoard() {
 
     const squares = [];
 
-    const size = 8; // 8x8 chess board
+    const size = 8;
+
     const tile = 1.5;
 
     for (let x = 0; x < size; x++) {
@@ -47,125 +47,139 @@ function ChessBoard() {
             squares.push(
 
                 <mesh
+
                     key={`${x}-${z}`}
+
                     position={[
+
                         (x - size / 2) * tile,
+
                         0,
-                        (z - size / 2) * tile,
+
+                        (z - size / 2) * tile
+
                     ]}
+
                     receiveShadow
-                    castShadow
+
                 >
 
-                    <boxGeometry args={[tile, 0.1, tile]} />
+                    <boxGeometry args={[tile, 0.12, tile]} />
 
                     <meshStandardMaterial
-                        color={isGreen ? "#1F7A3A" : "#F5F5F5"} // GREEN + WHITE
+
+                        color={isGreen ? "#1F7A3A" : "#F5F5F5"}
+
                         roughness={0.4}
+
                         metalness={0.2}
+
                     />
 
                 </mesh>
+
             );
+
         }
+
     }
 
     return <>{squares}</>;
+
 }
 
 
-// 👑 KING PIECE
 
-function KingPiece() {
+// 👑 ONE SQUARE MOVES
+const moves = [
+
+    [0, 0],
+
+    [1.5, 0],
+
+    [1.5, 1.5],
+
+    [0, 1.5],
+
+    [-1.5, 1.5],
+
+];
+
+
+
+
+// ================= KING MODEL =================
+
+function KingModel({ color }: { color: string }) {
 
     return (
 
-        <group position={[0, 0.6, 0]} scale={[0.6, 0.6, 0.6]} castShadow>
+        <group scale={[0.6, 0.6, 0.6]}>
 
-            {/* 👑 BASE */}
-
-            <mesh position={[0, -0.8, 0]} castShadow>
+            <mesh position={[0, -0.8, 0]}>
 
                 <cylinderGeometry args={[1.1, 1.3, 0.5, 64]} />
 
                 <meshStandardMaterial
-                    color="#D4AF37"
+
+                    color={color}
+
                     metalness={1}
-                    roughness={0.2}
+
+                    roughness={0.15}
+
                 />
 
             </mesh>
 
 
-            {/* BODY */}
-
-            <mesh castShadow>
+            <mesh>
 
                 <cylinderGeometry args={[0.4, 0.7, 2.5, 64]} />
 
-                <meshStandardMaterial
-                    color="#D4AF37"
-                    metalness={1}
-                    roughness={0.2}
-                />
+                <meshStandardMaterial color={color} metalness={1} />
 
             </mesh>
 
 
-            {/* SHOULDER RING */}
-
-            <mesh position={[0, 1.2, 0]} castShadow>
+            <mesh position={[0, 1.2, 0]}>
 
                 <torusGeometry args={[0.6, 0.12, 32, 100]} />
 
-                <meshStandardMaterial
-                    color="#D4AF37"
-                    metalness={1}
-                    roughness={0.2}
-                />
+                <meshStandardMaterial color={color} />
 
             </mesh>
 
 
-            {/* HEAD BALL */}
-
-            <mesh position={[0, 1.9, 0]} castShadow>
+            <mesh position={[0, 1.9, 0]}>
 
                 <sphereGeometry args={[0.35, 64, 64]} />
 
-                <meshStandardMaterial
-                    color="#D4AF37"
-                    metalness={1}
-                    roughness={0.2}
-                />
+                <meshStandardMaterial color={color} />
 
             </mesh>
 
 
-            {/* 👑 CROSS TOP */}
-
-            <mesh position={[0, 2.4, 0]} castShadow>
+            <mesh position={[0, 2.4, 0]}>
 
                 <boxGeometry args={[0.15, 0.7, 0.15]} />
 
-                <meshStandardMaterial
-                    color="#D4AF37"
-                    metalness={1}
-                    roughness={0.2}
-                />
+                <meshStandardMaterial color={color} />
 
             </mesh>
 
 
-            <mesh position={[0, 2.6, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <mesh
+
+                position={[0, 2.6, 0]}
+
+                rotation={[0, 0, Math.PI / 2]}
+
+            >
 
                 <boxGeometry args={[0.15, 0.7, 0.15]} />
 
-                <meshStandardMaterial
-                    color="#D4AF37"
-                    metalness={1}
-                    roughness={0.2}
-                />
+                <meshStandardMaterial color={color} />
 
             </mesh>
 
@@ -175,6 +189,144 @@ function KingPiece() {
 
 }
 
+
+
+// ================= TWO KINGS =================
+
+function Kings() {
+
+    const goldRef = useRef<any>(null);
+
+    const whiteRef = useRef<any>(null);
+
+    const [target, setTarget] = useState(0);
+
+
+    // scroll detect
+
+    useEffect(() => {
+
+        const handleScroll = () => {
+
+            const y = window.scrollY;
+
+            if (y < 600) setTarget(0);
+
+            else if (y < 1400) setTarget(1);
+
+            else if (y < 2200) setTarget(2);
+
+            else if (y < 3000) setTarget(3);
+
+            else setTarget(4);
+
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+
+    }, []);
+
+
+    // animation
+
+    useFrame(() => {
+
+        const goldTarget =
+
+            new THREE.Vector3(
+
+                moves[target][0],
+
+                0.6,
+
+                moves[target][1]
+
+            );
+
+
+        // opposite movement
+
+        const whiteTarget =
+
+            new THREE.Vector3(
+
+                -moves[target][0],
+
+                0.6,
+
+                -moves[target][1]
+
+            );
+
+
+        if (goldRef.current)
+
+            goldRef.current.position.lerp(
+
+                goldTarget,
+
+                0.05
+
+            );
+
+
+        if (whiteRef.current)
+
+            whiteRef.current.position.lerp(
+
+                whiteTarget,
+
+                0.05
+
+            );
+
+    });
+
+
+    return (
+
+        <>
+
+            {/* GOLD KING */}
+
+            <group
+
+                ref={goldRef}
+
+                position={[0, 0.6, 0]}
+
+            >
+
+                <KingModel color="#D4AF37" />
+
+            </group>
+
+
+            {/* WHITE KING */}
+
+            <group
+
+                ref={whiteRef}
+
+                position={[0, 0.6, 3]}
+
+            >
+
+                <KingModel color="#F5F5F5" />
+
+            </group>
+
+        </>
+
+    );
+
+}
+
+
+
+// ================= MAIN =================
 
 export default function ChessBoardBackground() {
 
@@ -186,47 +338,52 @@ export default function ChessBoardBackground() {
 
             camera={{ position: [6, 6, 8], fov: 45 }}
 
-            gl={{ alpha: false }}
-
-            style={{
-
-                background: "#11064d"
-
-            }}
+            style={{ background: "#06020F" }}
 
         >
 
-            {/* LIGHTING */}
-
-            <ambientLight intensity={0.8} />
+            <ambientLight intensity={1} />
 
             <directionalLight
-                position={[5, 10, 5]}
-                intensity={2}
-                castShadow
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
-            />
 
-            {/* GOLD SPOTLIGHT KING */}
+                position={[5, 10, 5]}
+
+                intensity={2.5}
+
+                castShadow
+
+            />
 
             <pointLight
+
                 position={[0, 4, 0]}
-                intensity={7}
-                color="#D4AF37"
+
+                intensity={6}
+
+                color="#FFD700"
+
             />
+
+
             <RotatingBoard>
+
                 <ChessBoard />
 
-                <KingPiece />
+                <Kings />
+
             </RotatingBoard>
 
+
             <OrbitControls
+
                 enableZoom={false}
+
                 enablePan={false}
+
             />
 
         </Canvas>
 
     );
+
 }

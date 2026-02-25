@@ -11,9 +11,9 @@ const techSkills = [
 
     { name: "C/C++", percentage: 50 },
 
-    { name: "Frontend(HTML,CSS,JS)", percentage: 70 },
+    { name: "Frontend (HTML,CSS,JS)", percentage: 70 },
 
-    { name: "Mysql", percentage: 60 },
+    { name: "MySQL", percentage: 60 },
 
     { name: "AI Tools", percentage: 80 },
 
@@ -25,7 +25,7 @@ export default function SkillDashboard() {
 
         <section className="w-full">
 
-            {/* 👑 GOLD GLOW HEADING */}
+            {/* 👑 HEADING */}
 
             <h2 className="text-5xl font-serif text-royal-gold drop-shadow-[0_0_15px_#D4AF37] text-center">
 
@@ -66,48 +66,42 @@ export default function SkillDashboard() {
 
                             </h3>
 
-                            <div className="flex justify-between text-sm text-royal-silver mb-1">
+
+                            <div className="flex justify-between text-sm text-royal-silver mb-2">
 
                                 <span>Proficiency</span>
-
-                                <span>{skill.percentage}%</span>
 
                             </div>
 
 
-                            {/* 👑 PROGRESS BAR */}
+                            {/* 👑 PROGRESS BAR BACKGROUND */}
 
-                            <div className="h-3 bg-black/60 rounded-full overflow-hidden">
+                            <div className="h-3 w-full bg-black/80 rounded-full overflow-hidden border border-green-500/40">
+
+
+                                {/* 👑 GREEN FILL */}
 
                                 <motion.div
 
                                     initial={{ width: 0 }}
 
-                                    animate={{
+                                    whileInView={{ width: `${skill.percentage}%` }}
 
-                                        width: `${skill.percentage}%`,
+                                    viewport={{ once: true }}
 
-                                        boxShadow: [
+                                    transition={{ duration: 1.6, ease: "easeOut" }}
 
-                                            "0 0 5px #0a7524",
+                                    className="h-full rounded-full
 
-                                            "0 0 25px #036e2c",
+                  bg-gradient-to-r
 
-                                            "0 0 10px #008a49"
+                  from-green-400
 
-                                        ]
+                  via-green-500
 
-                                    }}
+                  to-emerald-600
 
-                                    transition={{
-
-                                        duration: 1.5,
-
-                                        ease: "easeOut"
-
-                                    }}
-
-                                    className="h-full bg-royal-gold shadow-[0_0_15px_#D4AF37]"
+                  shadow-[0_0_18px_#22c55e,0_0_35px_#22c55e]"
 
                                 />
 
