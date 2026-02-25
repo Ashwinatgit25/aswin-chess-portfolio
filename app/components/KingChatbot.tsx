@@ -12,8 +12,6 @@ export default function KingChatbot({
 
     const [input, setInput] = useState("");
 
-    const [loading, setLoading] = useState(false);
-
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
 
@@ -23,7 +21,7 @@ export default function KingChatbot({
 
             role: "king",
 
-            text: "Welcome Challenger. Ask anything about Aswin's skills or projects."
+            text: "Welcome Challenger. Ask about my skills, projects or achievements."
 
         }
 
@@ -101,87 +99,51 @@ export default function KingChatbot({
 
 
 
-    /* 👑 REAL AI */
+    /* 👑 KING LOCAL BRAIN */
 
-    async function kingAIReply(question: string) {
+    function kingReply(q: string) {
 
-        try {
-
-            const res = await fetch(
-
-                "https://api.groq.com/openai/v1/chat/completions",
-
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type": "application/json",
-
-                        Authorization:
-                            `Bearer ${process.env.NEXT_PUBLIC_GROQ_API_KEY}`,
-
-                        body: JSON.stringify({
-
-                            model: "llama-3.3-70b-versatile",
-
-                            messages: [
-
-                                {
-
-                                    role: "system",
-
-                                    content:
-
-                                        "You are King Aswin portfolio AI assistant. Answer professionally about skills projects achievements and resume."
-
-                                },
-
-                                {
-
-                                    role: "user",
-
-                                    content: question
-
-                                }
-
-                            ]
-
-                        })
-
-                    });
-
-            const data = await res.json();
-
-            console.log("AI RESPONSE", data);
+        q = q.toLowerCase();
 
 
-            return (
+        if (q.includes("skill"))
 
-                data?.choices?.[0]?.message?.content
+            return "Aswin specialises in Java, Python, C/C++, Full Stack Development, MySQL databases and modern AI tools. He focuses on scalable backend systems and clean UI development.";
 
-                ?? "The King is silent for a moment."
 
-            );
+        if (q.includes("project"))
 
-        }
+            return "Major projects include Jarvis AI Assistant, Real or Fake Detector AI and Examination Management System built using Java and MySQL. Frontend works include Portfolio, Calculator and Web Games.";
 
-        catch (error) {
 
-            console.log(error);
+        if (q.includes("achievement"))
 
-            return "The king awaits another question.";
+            return "Achievements include COMNET 25.0 First Prize for Fire Fighting Robot, Elite Performer Award and multiple certifications from Infosys, Accenture and Udemy.";
 
-        }
 
+        if (q.includes("resume"))
+
+            return "You may open the Resume directly from the navigation bar to explore academic and technical experience.";
+
+
+        if (q.includes("hire"))
+
+            return "Aswin combines Electronics Engineering fundamentals with modern software development and AI innovation — making him a strong IT candidate.";
+
+
+        if (q.includes("contact"))
+
+            return "Scroll to the Contact section and send a message to begin collaboration.";
+
+
+        return "Interesting move. Explore the portfolio further.";
     }
 
 
 
     /* SEND */
 
-    async function sendMessage(text?: string) {
+    function sendMessage(text?: string) {
 
         const msg = text ?? input;
 
@@ -192,43 +154,48 @@ export default function KingChatbot({
 
             ...prev,
 
-            { role: "user", text: msg }
+            {
+
+                role: "user",
+
+                text: msg
+
+            }
 
         ]);
 
 
         setInput("");
 
-        setLoading(true);
+
+        setTimeout(() => {
+
+            const reply =
+
+                kingReply(msg);
 
 
-        const reply =
+            setMessages(prev => [
 
-            await kingAIReply(msg);
+                ...prev,
 
+                {
 
-        setLoading(false);
+                    role: "king",
 
+                    text: reply
 
-        setMessages(prev => [
+                }
 
-            ...prev,
+            ]);
 
-            {
-
-                role: "king",
-
-                text: reply
-
-            }
-
-        ]);
+        }, 600);
 
     }
 
 
 
-    /* ENTER SEND */
+    /* ENTER */
 
     function handleKey(e: any) {
 
@@ -243,10 +210,9 @@ export default function KingChatbot({
     }
 
 
-
     const suggestions = [
 
-        "Tell me about skills",
+        "Show Skills",
 
         "Projects",
 
@@ -257,7 +223,6 @@ export default function KingChatbot({
         "Resume"
 
     ];
-
 
 
     return (
@@ -311,7 +276,7 @@ overflow-hidden
 
                         <div
 
-                            className="flex justify-between items-center
+                            className="flex justify-between
 
 px-4 py-3
 
@@ -430,18 +395,7 @@ ${m.role === "king"
                             ))}
 
 
-
-                            {loading && (
-
-                                <p className="text-xs text-royal-gold">
-
-                                    King is thinking...
-
-                                </p>
-
-                            )}
-
-
+                            {/* Suggestions */}
 
                             <div className="flex flex-wrap gap-2">
 
@@ -494,7 +448,9 @@ transition
 
                         <div
 
-                            className="flex gap-2 p-3
+                            className="flex gap-2
+
+p-3
 
 border-t border-royal-gold/30"
 
