@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSectionObserver } from "../hooks/useSectionObserver";
 import DialogueBubble from "./ui/DialogueBubble";
+import KingChatbot from "./KingChatbot";
 
 
-// ❌ Strategy remove pannom
+// Sections
 const sectionIds = [
 
     "home",
@@ -22,7 +23,8 @@ const sectionIds = [
 ];
 
 
-// Dialogue update
+// King dialogues
+
 const dialogues: Record<string, string> = {
 
     home: "Welcome Challenger.",
@@ -38,7 +40,8 @@ const dialogues: Record<string, string> = {
 };
 
 
-// Chess square positions
+// Board movement positions
+
 const positions: Record<string, number> = {
 
     home: 0,
@@ -56,12 +59,23 @@ const positions: Record<string, number> = {
 
 export default function KingAvatar() {
 
-    const { activeSection } = useSectionObserver(sectionIds);
+    const { activeSection } =
+
+        useSectionObserver(sectionIds);
+
 
     const [xPos, setXPos] = useState(0);
 
 
-    // move king when section change
+    // 👑 CHATBOT STATE
+
+    const [chatOpen, setChatOpen] =
+
+        useState(false);
+
+
+    // Section move
+
     useEffect(() => {
 
         if (activeSection) {
@@ -84,112 +98,152 @@ export default function KingAvatar() {
         "Let's play.";
 
 
+
     return (
 
-        <motion.div
-
-            className="fixed bottom-10 left-1/2 z-40 flex items-end gap-4 pointer-events-none"
-
-            animate={{
-
-                x: xPos
-
-            }}
-
-            transition={{
-
-                type: "spring",
-
-                stiffness: 60,
-
-                damping: 18
-
-            }}
-
-        >
-
-            {/* KING FLOAT */}
+        <>
 
             <motion.div
 
-                animate={{ y: [0, -8, 0] }}
+                className="
+
+fixed bottom-10 left-1/2
+
+z-40 flex items-end gap-4
+
+"
+
+                animate={{ x: xPos }}
 
                 transition={{
 
-                    duration: 3,
+                    type: "spring",
 
-                    repeat: Infinity,
+                    stiffness: 60,
 
-                    ease: "easeInOut"
+                    damping: 18
 
                 }}
 
-                className="w-20 h-20 md:w-24 md:h-24 drop-shadow-[0_0_25px_#D4AF37]"
-
             >
 
-                {/* Better King SVG */}
+                {/* 👑 KING */}
 
-                <svg viewBox="0 0 100 100">
+                <motion.div
 
-                    <circle cx="50" cy="40" r="18"
+                    onClick={() => setChatOpen(true)}
 
-                        fill="#D4AF37"
+                    className="
 
-                    />
+w-20 h-20 md:w-24 md:h-24
 
-                    <rect
+cursor-pointer
 
-                        x="42"
+drop-shadow-[0_0_25px_#D4AF37]
 
-                        y="58"
+"
 
-                        width="16"
+                    animate={{ y: [0, -8, 0] }}
 
-                        height="30"
+                    transition={{
 
-                        fill="#D4AF37"
+                        duration: 3,
 
-                    />
+                        repeat: Infinity,
 
-                    <rect
+                        ease: "easeInOut"
 
-                        x="48"
+                    }}
 
-                        y="10"
+                >
 
-                        width="4"
+                    {/* KING SVG */}
 
-                        height="18"
+                    <svg viewBox="0 0 100 100">
 
-                        fill="#E6C77A"
+                        <circle
 
-                    />
+                            cx="50"
 
-                    <rect
+                            cy="40"
 
-                        x="40"
+                            r="18"
 
-                        y="18"
+                            fill="#D4AF37"
 
-                        width="20"
+                        />
 
-                        height="4"
+                        <rect
 
-                        fill="#E6C77A"
+                            x="42"
 
-                    />
+                            y="58"
 
-                </svg>
+                            width="16"
+
+                            height="30"
+
+                            fill="#D4AF37"
+
+                        />
+
+                        <rect
+
+                            x="48"
+
+                            y="10"
+
+                            width="4"
+
+                            height="18"
+
+                            fill="#E6C77A"
+
+                        />
+
+                        <rect
+
+                            x="40"
+
+                            y="18"
+
+                            width="20"
+
+                            height="4"
+
+                            fill="#E6C77A"
+
+                        />
+
+                    </svg>
+
+                </motion.div>
+
+
+
+                {/* Dialogue bubble */}
+
+                <div className="pointer-events-none">
+
+                    <DialogueBubble text={dialogue} />
+
+                </div>
 
             </motion.div>
 
 
-            {/* Dialogue */}
 
-            <DialogueBubble text={dialogue} />
+            {/* 👑 CHATBOT */}
 
-        </motion.div>
+            <KingChatbot
+
+                open={chatOpen}
+
+                onClose={() => setChatOpen(false)}
+
+            />
+
+        </>
 
     );
 
