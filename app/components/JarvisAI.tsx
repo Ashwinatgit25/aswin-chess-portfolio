@@ -38,10 +38,10 @@ export default function JarvisAI() {
                 <div
                     style={{
                         position: "fixed",
-                        bottom: "35px",
+                        bottom: "10px",
                         right: "35px",
                         width: "420px",
-                        height: "600px",
+                        height: "560px",
                         zIndex: 9999,
                         borderRadius: "18px",
                         overflow: "hidden",
