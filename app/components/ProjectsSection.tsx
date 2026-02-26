@@ -14,7 +14,7 @@ const projects = [
 
     tech: ["Python", "AI Tools", "Automation", "NLP"],
 
-    github: "https://github.com/",
+    github: "https://github.com/Ashwinatgit25",
 
   },
 
@@ -28,7 +28,7 @@ const projects = [
 
     tech: ["Python", "Machine Learning", "AI Models", "Computer Vision"],
 
-    github: "https://github.com/",
+    github: "https://github.com/Ashwinatgit25",
 
   },
 
@@ -42,7 +42,7 @@ const projects = [
 
     tech: ["Java", "NetBeans", "Swing GUI", "MySQL"],
 
-    github: "https://github.com/",
+    github: "https://github.com/Ashwinatgit25",
 
   },
 
@@ -56,7 +56,7 @@ const projects = [
 
     tech: ["HTML", "CSS", "JavaScript"],
 
-    github: "https://github.com/",
+    github: "https://github.com/Ashwinatgit25",
 
   },
 

@@ -8,9 +8,9 @@ export default function ContactSection() {
         <h2 className="font-serif text-4xl text-royal-gold text-center mb-8">Plan Your Move</h2>
         
         <div className="flex justify-center gap-8 mb-8">
-          <a href="mailto:aswin@example.com" className="text-royal-gold hover:underline">Email</a>
-          <a href="https://github.com/" className="text-royal-gold hover:underline">GitHub</a>
-          <a href="https://linkedin.com/" className="text-royal-gold hover:underline">LinkedIn</a>
+          <a href="mailto:aswinkumarrds@example.com" className="text-royal-gold hover:underline">Email</a>
+          <a href="https://github.com/Ashwinatgit25" className="text-royal-gold hover:underline">GitHub</a>
+          <a href="https://www.linkedin.com/in/aswinkumar-d" className="text-royal-gold hover:underline">LinkedIn</a>
         </div>
 
         <form className="space-y-4">
